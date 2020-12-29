@@ -1,0 +1,34 @@
+{
+  "name": "kubernetes-scheduler-algorithm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TitanLi/kubernetes-scheduler-algorithm.git"
+  },
+  "author": "Titan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TitanLi/kubernetes-scheduler-algorithm/issues"
+  },
+  "homepage": "https://github.com/TitanLi/kubernetes-scheduler-algorithm#readme",
+  "dependencies": {
+    "async-redis": "^1.1.7",
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "joi": "^14.3.1",
+    "kubernetes-client": "^9.0.0",
+    "path": "^0.12.7",
+    "ping": "^0.2.3",
+    "redis": "^3.0.2",
+    "ssh2": "^0.8.9",
+    "wol": "^1.0.7"
+  }
+}

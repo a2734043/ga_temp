@@ -31,7 +31,7 @@ EOF
 
 apt-get update
 
-apt-get install -y kubelet kubeadm kubectl
+apt-get install -y kubelet=1.15.3-00 kubeadm=1.15.3-00 kubectl=1.15.3-00
 
 swapoff -a
 
@@ -50,4 +50,4 @@ ip link delete flannel.1
 systemctl start docker
 systemctl start kubelet
 
-kubeadm join 192.168.2.94:6443 --token vvkj3j.nv36x54urhqeuirx     --discovery-token-ca-cert-hash sha256:a73c7a1953be43450f7d44c24af275a891d9d731528188f9d5e18a8719455c08
+kubeadm join 10.0.1.236:6443 --token 4o87k3.wskacs1p2ur5jfi0     --discovery-token-ca-cert-hash sha256:426b982d9c3bb0053b411c6ae9775e6c2d2519662b37469c014fc5e496252df6

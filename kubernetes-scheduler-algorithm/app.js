@@ -11,10 +11,21 @@ const initPopulationSize = 10;
 const Migrate = require('./lib/migrate.js');
 const GA = require('./genetic-algorithm/v2/app.js');
 const clusterControllerMaster = 'jianqun-236';
-const clusterMasterWorkNode = 'jianqun-240';
-// const clusterWorkNodeList = ['titan4', 'titan2', 'titan3', 'titan5', 'titan6'];
-const clusterWorkNodeList = ['jianqun-240', 'jianqun-241'];
+const clusterMasterWorkNode = 'jianqun-237';
+const clusterWorkNodeList = ['jianqun-237', 'jianqun-238', 'jianqun-239', 'jianqun-240', 'jianqun-241'];
 const clusterWorkNodeResource = {
+    'jianqun-237': {
+        'cpu': 8,
+        'memory': 16000000000
+    },
+    'jianqun-238': {
+        'cpu': 8,
+        'memory': 16000000000
+    },
+    'jianqun-239': {
+        'cpu': 8,
+        'memory': 16000000000
+    },
     'jianqun-240': {
         'cpu': 8,
         'memory': 16000000000
@@ -24,15 +35,13 @@ const clusterWorkNodeResource = {
         'memory': 16000000000
     },
 }
-// 'titan6': {
-//     'cpu': 8,
-//     'memory': 16000000000
-// }
 const clusterWorkNodeMAC = {
+    'jianqun-237': '10:78:d2:fb:4b:a6',
+    'jianqun-238': '10:78:d2:fb:4c:0a',
+    'jianqun-239': '10:78:d2:f2:47:45',
     'jianqun-240': '10:78:d2:e1:64:09',
     'jianqun-241': '10:78:d2:f2:47:d0',
 }
-// 'titan6': 'a0:d3:c1:0b:2d:81'
 
 const express = require('express');
 const path = require('path');

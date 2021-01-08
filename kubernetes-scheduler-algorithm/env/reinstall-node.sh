@@ -19,7 +19,7 @@ add-apt-repository \
 
 apt-get update
 
-apt-get install -y docker-ce docker-ce-cli containerd.io
+apt-get install -y docker-ce=18.06.2~ce~3-0~ubuntu docker-ce-cli containerd.io
 
 apt-get update && apt-get install -y apt-transport-https curl
 
@@ -31,7 +31,7 @@ EOF
 
 apt-get update
 
-apt-get install -y kubelet=1.15.3-00 kubeadm=1.15.3-00 kubectl=1.15.3-00
+apt-get install -y kubelet=1.18.3-00 kubeadm=1.18.3-00 kubectl=1.18.3-00
 
 swapoff -a
 

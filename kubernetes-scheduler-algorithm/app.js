@@ -673,8 +673,35 @@ async function scheduler() {
             }
         }
     }
+    var uploadPlacementInfo = reqWorkNodeInfo;
+    uploadPlacementInfo["vnfNameList"] = vnfNameList;
+    uploadPlacementInfo["vnfRequestList"] = vnfRequestList;
+    uploadPlacementData(uploadPlacementInfo);
     await timer.sleep(1000);
     scheduler();
+}
+
+const { Kafka } = require('kafkajs')
+const kafka = new Kafka({
+  brokers: ['10.0.0.131:9092']
+})
+const producer = kafka.producer()
+var schedulerExecTimes = 0
+async function uploadPlacementData(uploadPlacementInfo){
+    schedulerExecTimes++;
+    while (schedulerExecTimes == 5){
+        schedulerExecTimes = 0;
+        str_uploadPlacementInfo = JSON.stringify(uploadPlacementInfo);
+        console.log(str_uploadPlacementInfo);
+        await producer.connect()
+        await producer.send({
+        topic: 'quickstart-events',
+        messages: [
+            { value: str_uploadPlacementInfo },
+        ],
+        })
+        await producer.disconnect()
+    }
 }
 
 const openNode = async (node) => {

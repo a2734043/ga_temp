@@ -6,11 +6,12 @@ spec:
   selector:
     matchLabels:
       app: stress-deployment
-  replicas: 7
+  replicas: 9
   template:
     metadata:
       labels:
         app: stress-deployment
+        reqBandwidth: "100Mi"
     spec:
       schedulerName: my-scheduler
       containers:
@@ -18,10 +19,39 @@ spec:
         image: polinux/stress
         resources:
           limits:
-            cpu: "1"
+            cpu: "2"
             memory: "200Mi"
           requests:
-            cpu: "1"
+            cpu: "2"
             memory: "100Mi"
         command: ["stress"]
         args: ["--cpu",  "1", "--timeout", "200000"]
+
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: stress-deployment1
+# spec:
+#   selector:
+#     matchLabels:
+#       app: stress-deployment1
+#   replicas: 6
+#   template:
+#     metadata:
+#       labels:
+#         app: stress-deployment1
+#     spec:
+#       schedulerName: my-scheduler
+#       containers:
+#       - name: stress-demo-cpu1
+#         image: polinux/stress
+#         resources:
+#           limits:
+#             cpu: "2"
+#             memory: "200Mi"
+#           requests:
+#             cpu: "2"
+#             memory: "100Mi"
+#         command: ["stress"]
+#         args: ["--cpu",  "1", "--timeout", "200000"]

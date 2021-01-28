@@ -11,7 +11,7 @@ class dataCollectionPod {
         let deploymentListItems = getDeploymentResponse.body.items;
         for (let i = 0; i < deploymentListItems.length; i++) {
             if (deploymentListItems[i].metadata.name.match('coredns')) {
-                console.log(colors.bgYellow('Deployment:coredns pass'));
+                // console.log(colors.bgYellow('Deployment:coredns pass'));
             } else if (deploymentListItems[i].metadata.name.match('prometheus')) {
                 console.log(colors.bgYellow('Deployment:prometheus pass'));
             } else {

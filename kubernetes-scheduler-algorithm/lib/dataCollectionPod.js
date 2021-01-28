@@ -19,12 +19,15 @@ class dataCollectionPod {
         for (let i = 0; i < deploymentListItems.length; i++) {
             if (deploymentListItems[i].metadata.name.match('coredns')) {
                 // 排除coredns Deployment
-                console.log(colors.bgYellow('Deployment:coredns pass'));
+                // console.log(colors.bgYellow('Deployment:coredns pass'));
             } else if (deploymentListItems[i].metadata.name.match('prometheus')) {
                 // 排除prometheus Deployment
                 console.log(colors.bgYellow('Deployment:prometheus pass'));
             } else {
                 // 計算該Pod需要多少資源
+                if (deploymentListItems[i].spec.template.metadata.labels.reqBandwidth){
+                    console.log(Number(deploymentListItems[i].spec.template.metadata.labels.reqBandwidth.split('Mi')[0] * 1024 * 1024) || 0);
+                }
                 let podContainers = deploymentListItems[i].spec.template.spec.containers;
                 let requestCPU = 0;
                 let requestMemory = 0;
@@ -46,6 +49,7 @@ class dataCollectionPod {
                 });
             };
         }
+        // console.log(this.deploymentList);
         return this.deploymentList;
     }
 

@@ -230,14 +230,14 @@ async function nodeScaleIn() {
             }
         }
     }
-    console.log(colors.red('已放置VNF'));
-    console.log(vnfNameList);
-    console.log(vnfRequestList);
-    console.log(colors.red('未放置VNF'));
-    console.log(pendingVnfNameList);
-    console.log(pendingVnfRequestList);
-    console.log(colors.red('染色體位置'));
-    console.log(placement);
+    // console.log(colors.red('已放置VNF'));
+    // console.log(vnfNameList);
+    // console.log(vnfRequestList);
+    // console.log(colors.red('未放置VNF'));
+    // console.log(pendingVnfNameList);
+    // console.log(pendingVnfRequestList);
+    // console.log(colors.red('染色體位置'));
+    // console.log(placement);
     if (pendingVnfNameList.length == 0 && inProcessTasks.length == 0) {
         // 計算Worker Node是否欠載
         let maybeTurnOffNode = [];
@@ -505,6 +505,7 @@ async function scheduler() {
     placement = reqWorkNodeInfo.placement;
     // 取得所有Deployment列表
     let reqDeploymentList = await schedulerDataCollectionPod.getDeploymentList();
+    // console.log(reqDeploymentList);
     let vnfNameList = [];
     let vnfRequestList = [];
     let pendingVnfNameList = [];
@@ -548,12 +549,12 @@ async function scheduler() {
             }
         }
     }
-    console.log(colors.red('運行中VNF'));
-    console.log(vnfNameList);
-    console.log(vnfRequestList);
-    console.log(colors.red('待放置VNF'));
-    console.log(pendingVnfNameList);
-    console.log(pendingVnfRequestList);
+    // console.log(colors.red('運行中VNF'));
+    // console.log(vnfNameList);
+    // console.log(vnfRequestList);
+    // console.log(colors.red('待放置VNF'));
+    // console.log(pendingVnfNameList);
+    // console.log(pendingVnfRequestList);
     if (pendingVnfNameList.length > 0) {
         // 計算可用的Work Node剩餘資源
         let gaWorkNodeName = [];
@@ -673,9 +674,36 @@ async function scheduler() {
             }
         }
     }
+    // var uploadPlacementInfo = reqWorkNodeInfo;
+    // uploadPlacementInfo["vnfNameList"] = vnfNameList;
+    // uploadPlacementInfo["vnfRequestList"] = vnfRequestList;
+    // uploadPlacementData(uploadPlacementInfo);
     await timer.sleep(1000);
     scheduler();
 }
+
+// const { Kafka } = require('kafkajs')
+// const kafka = new Kafka({
+//   brokers: ['10.0.0.131:9092']
+// })
+// const producer = kafka.producer()
+// var schedulerExecTimes = 0
+// async function uploadPlacementData(uploadPlacementInfo){
+//     schedulerExecTimes++;
+//     while (schedulerExecTimes == 5){
+//         schedulerExecTimes = 0;
+//         str_uploadPlacementInfo = JSON.stringify(uploadPlacementInfo);
+//         console.log(str_uploadPlacementInfo);
+//         await producer.connect()
+//         await producer.send({
+//         topic: 'quickstart-events',
+//         messages: [
+//             { value: str_uploadPlacementInfo },
+//         ],
+//         })
+//         await producer.disconnect()
+//     }
+// }
 
 const openNode = async (node) => {
     const dataCollectionNode = new DataCollectionNode();

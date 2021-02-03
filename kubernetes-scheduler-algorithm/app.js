@@ -494,7 +494,12 @@ async function scheduler() {
     let workNodeResource = [];
     let placement = [[]];
     // 取得Worker Node資訊
+    // let a = await schedulerDataCollectionNode.getNodeBandwidth();
+    // console.log(a);
     let reqWorkNodeInfo = await schedulerDataCollectionNode.getWorkNodeInfo(clusterControllerMaster);
+    let reqAWorkNodeInfo = await schedulerDataCollectionNode.getAWorkNodeInfo(clusterControllerMaster);
+    console.log(reqAWorkNodeInfo);
+    console.log(reqWorkNodeInfo);
     workNodeName = reqWorkNodeInfo.workNodeName;
     workNodeResource = reqWorkNodeInfo.workNodeResource;
     // 將CPU總數減飽和度(workNodeSaturation)

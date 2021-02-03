@@ -24,6 +24,95 @@ class dataCollectionNode {
     //             return 1;
     //         })
     // }
+    getNodeBandwidth() {
+        return axios.get(`http://10.0.1.236:9090/api/v1/query?query=${prom.bandwidth.node_current_receive_bandwidth('10.0.1.236')}`)
+            .then((response) => {
+                // console.log(response.data.data.result[0].value[1])
+                return response.data.data.result[0].value[1];
+            })
+            .catch((error) => { console.error(error) })
+    }
+
+    getAWorkNodeInfo(clusterControllerMaster) {
+        this.workNodeName = [];
+        this.workNodeResource = [];
+        this.placement = [];
+        return this.client.api.v1.nodes.get()
+            .then((response) => {
+                // console.dir(response, { depth: null, colors: true });
+                let resNodeList = response.body.items;
+                for (let i = 0; i < resNodeList.length; i++) {
+                    // console.dir(resNodeList[i], { depth: null, colors: true });
+                    let nodeStatus = false;
+                    // 取得Worker Node狀態
+                    let conditions = resNodeList[i].status.conditions;
+                    for (let j = 0; j < conditions.length; j++) {
+                        if (conditions[j].type == 'Ready') {
+                            nodeStatus = conditions[j].status;
+                        }
+                    }
+                    // 取得Worker Node Name
+                    let node = resNodeList[i].metadata.name;
+                    // 取得Worker Node vCPU數量
+                    let cpu = Number(resNodeList[i].status.capacity.cpu);
+                    let bw =  await this.getNodeBandwidth().then(function(result) {
+                        return result
+                    })
+                    // let bw;
+                    // getNodeBandwidth.then(function(result) {
+                    //     bw = result
+                    // })
+                    // 取得Worker Node Memory數量
+                    let memory = Number(resNodeList[i].status.capacity.memory.split('Ki')[0]) * 1024;
+                    // 如果Worker Node狀態為Ready且不為clusterControllerMaster
+                    if (nodeStatus && node != clusterControllerMaster) {
+                        this.workNodeName.push(node);
+                        this.workNodeResource.push([cpu, memory, bw]);
+                        this.placement.push([]);
+                    }
+                }
+                let workNodeName = this.workNodeName;
+                let workNodeResource = this.workNodeResource;
+                let placement = this.placement;
+                return {
+                    workNodeName,
+                    workNodeResource,
+                    placement
+                }
+            });
+        // return axios.get(`http://192.168.2.94:9090/api/v1/query?query=${prom.cluster.node_num_cpu()}`)
+        //     .then((response) => {
+        //         let reqWorkNodeCPU = response.data.data.result;
+        //         for (let i = 0; i < reqWorkNodeCPU.length; i++) {
+        //             if (reqWorkNodeCPU[i].metric.node == clusterControllerMaster) {
+        //                 console.log(colors.red(`clusterControllerMaster(${clusterControllerMaster})不納入可用資源`));
+        //             } else {
+        //                 this.workNodeName.push(reqWorkNodeCPU[i].metric.node);
+        //                 this.workNodeResource.push([Number(reqWorkNodeCPU[i].value[1])]);
+        //                 // 初始化染色體空間
+        //                 this.placement.push([]);
+        //             }
+        //         }
+        //         return axios.get(`http://192.168.2.94:9090/api/v1/query?query=${prom.cluster.node_memory_MemAvailable_bytes()}`);
+        //     }).then((response) => {
+        //         let reqWorkNodeMem = response.data.data.result;
+        //         let funArray = [];
+        //         for (let i = 0; i < reqWorkNodeMem.length; i++) {
+        //             funArray.push(this.findPodPosition(reqWorkNodeMem[i].metric.pod, Number(reqWorkNodeMem[i].value[1]), clusterControllerMaster));
+        //         }
+        //         return Promise.all(funArray);
+        //     }).then((response) => {
+        //         let workNodeName = this.workNodeName;
+        //         let workNodeResource = this.workNodeResource;
+        //         let placement = this.placement;
+        //         return {
+        //             workNodeName,
+        //             workNodeResource,
+        //             placement
+        //         }
+        //     });
+    }
+
     /**
      * 取得Worker Node資訊
      * 

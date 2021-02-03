@@ -25,16 +25,17 @@ class dataCollectionPod {
                 console.log(colors.bgYellow('Deployment:prometheus pass'));
             } else {
                 // 計算該Pod需要多少資源
-                if (deploymentListItems[i].spec.template.metadata.labels.reqBandwidth){
-                    console.log(Number(deploymentListItems[i].spec.template.metadata.labels.reqBandwidth.split('Mi')[0] * 1024 * 1024) || 0);
-                }
                 let podContainers = deploymentListItems[i].spec.template.spec.containers;
                 let requestCPU = 0;
                 let requestMemory = 0;
+                let reqBandwidth = 0;
                 for (let j = 0; j < podContainers.length; j++) {
                     if (podContainers[j].resources.requests) {
                         requestCPU = requestCPU + (Number(podContainers[j].resources.requests.cpu) || 0);
                         requestMemory = requestMemory + (Number(podContainers[j].resources.requests.memory.split('Mi')[0] * 1024 * 1024) || 0);
+                    }
+                    if (deploymentListItems[i].spec.template.metadata.labels.reqBandwidth){
+                        reqBandwidth = reqBandwidth + (Number(deploymentListItems[i].spec.template.metadata.labels.reqBandwidth.split('Mi')[0] * 1024 * 1024) || 0);
                     }
                 }
                 // console.dir(deploymentListItems[i], { depth: null, colors: true });
@@ -45,6 +46,7 @@ class dataCollectionPod {
                     'replicaSetName': '',
                     'requestCPU': requestCPU,
                     'requestMemory': requestMemory,
+                    'reqBandwidth': reqBandwidth,
                     'pod': []
                 });
             };
